@@ -19,7 +19,7 @@ export function routeInitializer(router: Router): () => Promise<any> {
     });
 }
 
-export function param<T extends string>(parameter: PathParameters<T>) {
+export function param<T extends string>(parameter: PathParameter<T>) {
   return (target: any, propertyKey: string) => {
     target[propertyKey] = params$.asObservable().pipe(
       map((p) => p[<string>parameter]),
@@ -28,10 +28,10 @@ export function param<T extends string>(parameter: PathParameters<T>) {
   };
 }
 
-type PathParameters<T extends string> = T extends `:${infer P}/${infer R}`
-  ? P | PathParameters<`${R}`>
+type PathParameter<T extends string> = T extends `:${infer P}/${infer R}`
+  ? P | PathParameter<`${R}`>
   : T extends `${infer _}/${infer R}`
-  ? PathParameters<`${R}`>
+  ? PathParameter<`${R}`>
   : T extends `:${infer P}`
   ? P
   : unknown;
