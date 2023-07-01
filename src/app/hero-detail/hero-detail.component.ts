@@ -6,6 +6,7 @@ import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
 import { param } from '../routing/param.decorator';
 import { first, Observable, switchMap } from 'rxjs';
+import { ROUTES } from '../routing/routes.const';
 
 @Component({
   selector: 'app-hero-detail',
@@ -15,14 +16,10 @@ import { first, Observable, switchMap } from 'rxjs';
 export class HeroDetailComponent implements OnInit {
   hero: Hero | undefined;
 
-  @param('id')
+  @param<typeof ROUTES.DETAIL>('id')
   heroId$!: Observable<number>;
 
-  constructor(
-    private route: ActivatedRoute,
-    private heroService: HeroService,
-    private location: Location
-  ) {}
+  constructor(private heroService: HeroService, private location: Location) {}
 
   ngOnInit(): void {
     this.getHero();
